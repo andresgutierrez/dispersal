@@ -4,16 +4,27 @@ using System.Text.Json;
 
 Console.WriteLine("Dispersal");
 
-int currentTime = Utils.GetCurrentTime();
+var startTime = DateTime.Now;
 
-Blockchain phillyCoin = new();
+Blockchain phillyCoin = new Blockchain();
+phillyCoin.CreateTransaction(new Transaction("Henry", "MaHesh", 10));
+phillyCoin.ProcessPendingTransactions("Bill");
 
+phillyCoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
+phillyCoin.CreateTransaction(new Transaction("MaHesh", "Henry", 5));
+phillyCoin.ProcessPendingTransactions("Bill");
 
-var block = new Block("", currentTime, );
-//phillyCoin.AddBlock();
+var endTime = DateTime.Now;
 
-//phillyCoin.AddBlock(new Block("", currentTime, "{sender:MaHesh,receiver:Henry,amount:5}"));
-//phillyCoin.AddBlock(new Block("", currentTime, "{sender:Mahesh,receiver:Henry,amount:5}"));
+Console.WriteLine($"Duration: {endTime - startTime}");
 
-Console.WriteLine(phillyCoin.IsValid());
-Console.WriteLine(JsonSerializer.Serialize(phillyCoin));
+Console.WriteLine("=========================");
+Console.WriteLine($"Henry' balance: {phillyCoin.GetBalance("Henry")}");
+Console.WriteLine($"MaHesh' balance: {phillyCoin.GetBalance("MaHesh")}");
+Console.WriteLine($"Bill' balance: {phillyCoin.GetBalance("Bill")}");
+
+Console.WriteLine("=========================");
+Console.WriteLine($"phillyCoin");
+Console.WriteLine(JsonSerializer.Serialize(phillyCoin, new JsonSerializerOptions() { WriteIndented = true }));
+
+Console.ReadKey();
